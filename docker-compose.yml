@@ -1,0 +1,98 @@
+version: "3.8"
+
+networks:
+  lb-net:
+    driver: bridge
+
+services:
+  # ── 10 Worker containers ────────────────────────────────────────────────
+  worker1:
+    build: ./worker
+    environment: { WORKER_ID: "1", PORT: "3001" }
+    networks: [lb-net]
+
+  worker2:
+    build: ./worker
+    environment: { WORKER_ID: "2", PORT: "3001" }
+    networks: [lb-net]
+
+  worker3:
+    build: ./worker
+    environment: { WORKER_ID: "3", PORT: "3001" }
+    networks: [lb-net]
+
+  worker4:
+    build: ./worker
+    environment: { WORKER_ID: "4", PORT: "3001" }
+    networks: [lb-net]
+
+  worker5:
+    build: ./worker
+    environment: { WORKER_ID: "5", PORT: "3001" }
+    networks: [lb-net]
+
+  worker6:
+    build: ./worker
+    environment: { WORKER_ID: "6", PORT: "3001" }
+    networks: [lb-net]
+
+  worker7:
+    build: ./worker
+    environment: { WORKER_ID: "7", PORT: "3001" }
+    networks: [lb-net]
+
+  worker8:
+    build: ./worker
+    environment: { WORKER_ID: "8", PORT: "3001" }
+    networks: [lb-net]
+
+  worker9:
+    build: ./worker
+    environment: { WORKER_ID: "9", PORT: "3001" }
+    networks: [lb-net]
+
+  worker10:
+    build: ./worker
+    environment: { WORKER_ID: "10", PORT: "3001" }
+    networks: [lb-net]
+
+  # ── Load Balancer instances (one per algorithm) ─────────────────────────
+  lb-round-robin:
+    build: ./lb
+    environment: { ALGO: "1", LB_PORT: "8090" }
+    ports: ["8090:8090"]
+    networks: [lb-net]
+    depends_on:
+      [worker1,worker2,worker3,worker4,worker5,worker6,worker7,worker8,worker9,worker10]
+
+  lb-random:
+    build: ./lb
+    environment: { ALGO: "2", LB_PORT: "8091" }
+    ports: ["8091:8091"]
+    networks: [lb-net]
+    depends_on:
+      [worker1,worker2,worker3,worker4,worker5,worker6,worker7,worker8,worker9,worker10]
+
+  lb-hashing:
+    build: ./lb
+    environment: { ALGO: "3", LB_PORT: "8092" }
+    ports: ["8092:8092"]
+    networks: [lb-net]
+    depends_on:
+      [worker1,worker2,worker3,worker4,worker5,worker6,worker7,worker8,worker9,worker10]
+
+  lb-least-conn:
+    build: ./lb
+    environment: { ALGO: "4", LB_PORT: "8093" }
+    ports: ["8093:8093"]
+    networks: [lb-net]
+    depends_on:
+      [worker1,worker2,worker3,worker4,worker5,worker6,worker7,worker8,worker9,worker10]
+
+  lb-weighted-rr:
+    build: ./lb
+    environment: { ALGO: "5", LB_PORT: "8094" }
+    ports: ["8094:8094"]
+    networks: [lb-net]
+    depends_on:
+      [worker1,worker2,worker3,worker4,worker5,worker6,worker7,worker8,worker9,worker10]
